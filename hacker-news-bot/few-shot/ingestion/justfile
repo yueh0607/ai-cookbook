@@ -1,0 +1,5 @@
+parse:
+    docker compose -f docker-compose.parse.yaml run --build app
+
+index:
+    docker compose -f docker-compose.index.yaml up --build

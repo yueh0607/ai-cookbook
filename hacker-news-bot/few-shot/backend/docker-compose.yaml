@@ -1,0 +1,45 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    command:
+      - --qdrant_host=http://qdrant:6333
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - qdrant
+
+  qdrant:
+    image: qdrant/qdrant
+    ports:
+      - "6333:6333"
+    volumes:
+      - ingestion_qdrant-storage:/qdrant/storage
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    ports:
+      - "3001:8080"
+    environment:
+      ENABLE_OLLAMA_API: False
+      DEFAULT_MODELS: gpt-4o
+      OPENAI_API_BASE_URL: http://app:8000/webui
+      OPENAI_API_KEY: unused
+      WEBUI_AUTH: False
+    volumes:
+      - open-webui:/app/backend/data
+    restart: always
+    depends_on:
+      - app
+
+volumes:
+  open-webui:
+  ingestion_qdrant-storage:
+    external: true

@@ -1,0 +1,21 @@
+run:
+    docker compose up --build
+
+restart:
+    docker compose up -d --build app
+
+health:
+    curl http://0.0.0.0:8000/webui | jq
+
+models:
+    curl http://0.0.0.0:8000/webui/models | jq
+
+single-call:
+    curl http://0.0.0.0:8000/v1/chat/completions \
+        -H "Content-Type: application/json" \
+        -d @testdata/single_call.json | jq
+
+multiple-calls:
+    curl http://0.0.0.0:8000/v1/chat/completions \
+        -H "Content-Type: application/json" \
+        -d @testdata/multiple_calls.json | jq

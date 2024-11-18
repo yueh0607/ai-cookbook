@@ -1,0 +1,32 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    ports:
+      - "3001:8080"
+    environment:
+      ENABLE_OLLAMA_API: False
+      DEFAULT_MODELS: gpt-4o
+      OPENAI_API_BASE_URL: http://app:8000/webui
+      OPENAI_API_KEY: unused
+      WEBUI_AUTH: False
+    volumes:
+      - open-webui:/app/backend/data
+    restart: always
+    depends_on:
+      - app
+
+volumes:
+  open-webui:

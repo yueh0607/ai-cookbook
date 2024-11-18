@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "ingestion"
+version = "0.1.0"
+description = ""
+authors = ["Xiaojing Wang <2002434+wangxj03@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+absl-py = "^2.1.0"
+instructor = "^1.6.3"
+numpy = "^2.1.3"
+openai = "^1.53.0"
+pandas = "^2.2.3"
+pyarrow = "^18.0.0"
+qdrant-client = "^1.12.1"
+ray = "^2.38.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
